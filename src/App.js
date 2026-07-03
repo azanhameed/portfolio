@@ -137,9 +137,6 @@ const skills = {
   ],
 };
 
-// kept for legacy use elsewhere
-//const topSkills = skills.Development;
-
 const projects = [
   {
     title: "Retinal Blood Vessel Segmentation",
@@ -236,28 +233,6 @@ function HexGrid() {
     return () => { window.removeEventListener("resize", resize); cancelAnimationFrame(raf); };
   }, []);
   return <canvas ref={ref} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} />;
-}
-
-// ─── ANIMATED COUNTER ─────────────────────────────────────
-const Counter({ target, suffix = "" }) {
-  const [val, setVal] = useState(0);
-  const ref = useRef(null);
-  useEffect(() => {
-    const ob = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      let v = 0;
-      const step = () => {
-        v = Math.min(v + Math.ceil(target / 55), target);
-        setVal(v);
-        if (v < target) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-      ob.disconnect();
-    }, { threshold: 0.5 });
-    if (ref.current) ob.observe(ref.current);
-    return () => ob.disconnect();
-  }, [target]);
-  return <span ref={ref}>{val}{suffix}</span>;
 }
 
 // ─── SKILL BAR ────────────────────────────────────────────
@@ -387,8 +362,10 @@ function OrbitalIcons({ tab }) {
 }
 
 // ─── TYPING CURSOR ────────────────────────────────────────
+const TYPED_WORDS = ["AI Researcher", "Deep Learning Engineer", "Full-Stack Developer", "Computer Vision Dev"];
+
 function TypedTitle() {
-  const words = ["AI Researcher", "Deep Learning Engineer", "Full-Stack Developer", "Computer Vision Dev"];
+  const words = TYPED_WORDS;
   const [wi, setWi] = useState(0);
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
@@ -415,7 +392,7 @@ function TypedTitle() {
       setDel(false);
       setWi(i => (i + 1) % words.length);
     }
-  }, [words]);
+  }, [words, wi, ci, del]);
   return (
     <span style={{ color: T.teal, fontWeight: 700 }}>
       {words[wi].slice(0, ci)}
