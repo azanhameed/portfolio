@@ -138,7 +138,7 @@ const skills = {
 };
 
 // kept for legacy use elsewhere
-const topSkills = skills.Development;
+//const topSkills = skills.Development;
 
 const projects = [
   {
@@ -239,7 +239,7 @@ function HexGrid() {
 }
 
 // ─── ANIMATED COUNTER ─────────────────────────────────────
-function Counter({ target, suffix = "" }) {
+const Counter({ target, suffix = "" }) {
   const [val, setVal] = useState(0);
   const ref = useRef(null);
   useEffect(() => {
@@ -415,7 +415,7 @@ function TypedTitle() {
       setDel(false);
       setWi(i => (i + 1) % words.length);
     }
-  }, [ci, del, wi]);
+  }, [words]);
   return (
     <span style={{ color: T.teal, fontWeight: 700 }}>
       {words[wi].slice(0, ci)}
